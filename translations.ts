@@ -1,0 +1,327 @@
+
+export type Language = 'en' | 'mr' | 'hi';
+
+export const translations = {
+  en: {
+    nav: {
+      home: 'Home',
+      diagnose: 'Diagnose',
+      market: 'Market',
+      weather: 'Weather',
+      team: 'Team',
+      login: 'Login',
+      logout: 'Logout',
+      simulate: 'Digital Twin',
+      finance: 'Finance'
+    },
+    vaani: {
+      title: 'Agri-Vaani',
+      subtitle: 'Talk to me in your language. No typing needed.',
+      listening: 'Listening...',
+      processing: 'Thinking...',
+      speaking: 'Speaking...',
+      start: 'Tap to Speak',
+      stop: 'Stop',
+      error: 'Sorry, I missed that. Please try again.',
+      welcome: 'Hello! I am Agri-Vaani. Ask me anything about your crops, weather, or market prices.'
+    },
+    finance: {
+      title: 'Agri-Finance & Credit',
+      subtitle: 'Unlock growth with specialized micro-loans, insurance, and smart financial planning.',
+      creditScore: 'Agri-Credit Score',
+      eligibility: 'Loan Eligibility',
+      applyNow: 'Apply Now',
+      microLoans: 'Micro-Loans',
+      insurance: 'Crop Insurance',
+      trackExpenses: 'Expense Tracker',
+      totalSavings: 'Projected Savings',
+      loanDescription: 'Get low-interest loans for seeds and fertilizers within 24 hours.',
+      insureDescription: 'Protect your harvest against unseasonal rain and drought in Pune.',
+      authRequired: 'Account Required',
+      authDesc: 'Please sign in or create an account to view your credit score and apply for loans.',
+      loginToView: 'Login to View Score',
+      insurancePlans: 'Available Insurance Plans',
+      viewPlans: 'View Active Plans'
+    },
+    simulation: {
+      title: 'Digital Twin Simulation',
+      subtitle: 'Simulate crop decisions to forecast outcomes before applying them in the field.',
+      controls: 'Simulation Controls',
+      cropType: 'Crop Type',
+      waterInput: 'Irrigation (Liters/Day)',
+      fertilizerInput: 'Fertilizer (kg/Hectare)',
+      forecast: 'Forecast Results',
+      yield: 'Predicted Yield',
+      soilHealth: 'Soil Sustainability',
+      cost: 'Estimated Cost',
+      runSim: 'Recalculating Forecast...',
+      optimization: 'Optimization Tip'
+    },
+    homePage: {
+      heroTag: 'Agri-Tech Optimized for Pune Region',
+      heroTitle: 'AgriAgent – AI-Powered Crop Advisory for Smarter Farming',
+      heroSubtitle: 'Real-time diagnostics and market intelligence tailored for farmers in Pune and Maharashtra. Harness the power of AI to maximize your yield.',
+      getStarted: 'Get Started',
+      viewSolution: 'View Solution',
+      impactLabel: 'Regional Impact',
+      aboutTitle: 'The Future of Sustenance',
+      aboutDesc: 'AgriAgent is an AI-driven crop advisory system that helps farmers in the Pune region make data-driven decisions by analyzing soil data, local climate, and Mandi trends.',
+      aiDecisions: 'AI-Powered Decisions',
+      sustainableOutcomes: 'Sustainable Outcomes',
+      mandiIntegration: 'Mandi Integration',
+      ctaTitle: 'Empowering Farmers with AI',
+      ctaSubtitle: 'Join thousands of smart farmers in Pune already optimizing their yields with AgriAgent.',
+      ctaButton: 'Join AgriAgent Today'
+    },
+    diagnosePage: {
+      title: 'Crop Diagnostics',
+      subtitle: 'Snap a photo of your crop to identify diseases or deficiencies instantly.',
+      takePhoto: 'Take Photo',
+      uploadImage: 'Upload Image',
+      analyzing: 'Analyzing Crop...',
+      runAi: 'Run AI Diagnosis',
+      severity: 'Severity',
+      confidence: 'Match Confidence',
+      recommendedActions: 'Recommended Actions'
+    },
+    teamPage: {
+      title: 'Meet our Core Team',
+      subtitle: 'Technical excellence and creative design for the next generation of AI-driven agriculture.',
+    },
+    sustainability: {
+      title: 'Sustainable Agriculture',
+      subtitle: 'Our commitment to a greener future through AI optimization.',
+      precision: 'Precision Farming',
+      precisionDesc: 'Reducing water and fertilizer waste by up to 30% using AI soil mapping.',
+      soil: 'Soil Health',
+      soilDesc: 'Monitoring organic matter and microbial activity to ensure long-term fertility.',
+    },
+    loginPage: {
+      welcomeBack: 'Welcome Back',
+      joinAgri: 'Join AgriAgent',
+      accessDashboard: 'Access your smart farming dashboard',
+      startJourney: 'Start your journey with smart farming',
+      signIn: 'Sign In',
+      signUp: 'Sign Up',
+      newToAgri: 'New to AgriAgent?',
+      alreadyAccount: 'Already have an account?',
+      createAccount: 'Create an account'
+    }
+  },
+  mr: {
+    nav: {
+      home: 'मुख्यपृष्ठ',
+      diagnose: 'निदान',
+      market: 'बाजार',
+      weather: 'हवामान',
+      team: 'टीम',
+      login: 'लॉगिन',
+      logout: 'लॉगआउट',
+      simulate: 'डिजिटल ट्विन',
+      finance: 'वित्त'
+    },
+    vaani: {
+      title: 'कृषी-वाणी',
+      subtitle: 'तुमच्या भाषेत माझ्याशी बोला. टाईप करण्याची गरज नाही.',
+      listening: 'ऐकत आहे...',
+      processing: 'विचार करत आहे...',
+      speaking: 'बोलत आहे...',
+      start: 'बोलण्यासाठी टॅप करा',
+      stop: 'थांबा',
+      error: 'क्षमस्व, मला ते समजले नाही. कृपया पुन्हा प्रयत्न करा.',
+      welcome: 'नमस्कार! मी कृषी-वाणी आहे. तुमच्या पिकांबद्दल, हवामानाबद्दल किंवा बाजारभावाबद्दल मला काहीही विचारा.'
+    },
+    finance: {
+      title: 'कृषी-वित्त आणि पत',
+      subtitle: 'विशेष मायक्रो-लोन, विमा आणि स्मार्ट आर्थिक नियोजनासह प्रगती साधा.',
+      creditScore: 'कृषी-क्रेडिट स्कोअर',
+      eligibility: 'कर्ज पात्रता',
+      applyNow: 'अर्ज करा',
+      microLoans: 'मायक्रो-लोन्स',
+      insurance: 'पीक विमा',
+      trackExpenses: 'खर्च मागोवा',
+      totalSavings: 'अपेक्षित बचत',
+      loanDescription: 'बियाणे आणि खतांसाठी २४ तासांत कमी व्याजाचे कर्ज मिळवा.',
+      insureDescription: 'पुण्यातील अवकाळी पाऊस आणि दुष्काळापासून तुमच्या पिकाचे रक्षण करा.',
+      authRequired: 'खाते आवश्यक आहे',
+      authDesc: 'तुमचा क्रेडिट स्कोअर पाहण्यासाठी आणि कर्जासाठी अर्ज करण्यासाठी कृपया साइन इन करा किंवा खाते तयार करा.',
+      loginToView: 'स्कोअर पाहण्यासाठी लॉगिन करा',
+      insurancePlans: 'उपलब्ध विमा योजना',
+      viewPlans: 'सक्रिय योजना पहा'
+    },
+    simulation: {
+      title: 'डिजिटल ट्विन सिम्युलेशन',
+      subtitle: 'प्रत्यक्षात लागू करण्यापूर्वी पिकांच्या निर्णयांचे आणि निकालांचे भाकीत करा.',
+      controls: 'सिम्युलेशन नियंत्रणे',
+      cropType: 'पिकाचा प्रकार',
+      waterInput: 'सिंचन (लिटर/दिवस)',
+      fertilizerInput: 'खते (किलो/हेक्टर)',
+      forecast: 'अंदाज परिणाम',
+      yield: 'अपेक्षित उत्पन्न',
+      soilHealth: 'जमीन शाश्वतता',
+      cost: 'अंदाजित खर्च',
+      runSim: 'अंदाजाची पुनर्गणना करत आहे...',
+      optimization: 'ऑप्टिमायझेशन टीप'
+    },
+    homePage: {
+      heroTag: 'पुणे क्षेत्रासाठी कृषी-तंत्रज्ञान अनुकूलित',
+      heroTitle: 'AgriAgent – स्मार्ट शेतीसाठी AI-सक्षम पीक सल्लागार',
+      heroSubtitle: 'पुणे आणि महाराष्ट्रातील शेतकऱ्यांसाठी रिअल-टाइम निदान आणि बाजार माहिती. तुमचे उत्पन्न वाढवण्यासाठी AI च्या शक्तीचा वापर करा.',
+      getStarted: 'सुरू करा',
+      viewSolution: 'उपाय पहा',
+      impactLabel: 'प्रादेशिक प्रभाव',
+      aboutTitle: 'पोषणाचे भविष्य',
+      aboutDesc: 'AgriAgent ही एक AI-चलित पीक सल्लागार प्रणाली आहे जी पुणे क्षेत्रातील शेतकऱ्यांना जमिनीचा डेटा, स्थानिक हवामान आणि मंडी ट्रेंडचे विश्लेषण करून डेटा-आधारित निर्णय घेण्यास मदत करते.',
+      aiDecisions: 'AI-आधारित निर्णय',
+      sustainableOutcomes: 'शाश्वत परिणाम',
+      mandiIntegration: 'मंडी एकत्रीकरण',
+      ctaTitle: 'शेतकऱ्यांना AI सह सक्षम करणे',
+      ctaSubtitle: 'पुण्यातील हजारो स्मार्ट शेतकऱ्यांमध्ये सामील व्हा जे आधीच AgriAgent सह त्यांचे उत्पन्न वाढवत आहेत.',
+      ctaButton: 'आजच AgriAgent मध्ये सामील व्हा'
+    },
+    diagnosePage: {
+      title: 'पीक निदान',
+      subtitle: 'रोगांची किंवा कमतरतांची त्वरित ओळख करण्यासाठी तुमच्या पिकाचा फोटो घ्या.',
+      takePhoto: 'फोटो घ्या',
+      uploadImage: 'फोटो अपलोड करा',
+      analyzing: 'पिकाचे विश्लेषण करत आहे...',
+      runAi: 'AI निदान करा',
+      severity: 'तीव्रता',
+      confidence: 'आत्मविश्वास',
+      recommendedActions: 'शिफारस केलेल्या कृती'
+    },
+    teamPage: {
+      title: 'आमच्या कोअर टीमला भेटा',
+      subtitle: 'कृषी तंत्रज्ञानातील पुढील पिढीसाठी तांत्रिक उत्कृष्टता आणि सर्जनशील डिझाइन.',
+    },
+    sustainability: {
+      title: 'शाश्वत शेती',
+      subtitle: 'AI ऑप्टिमायझेशनद्वारे हरित भविष्यासाठी आमची वचनबद्धता.',
+      precision: 'अचूक शेती',
+      precisionDesc: 'AI सॉइल मॅपिंग वापरून पाणी आणि खताचा अपव्यय ३०% पर्यंत कमी करणे.',
+      soil: 'जमिनीचे आरोग्य',
+      soilDesc: 'दीर्घकालीन सुपीकता सुनिश्चित करण्यासाठी सेंद्रिय पदार्थ आणि सूक्ष्मजीव क्रियाकलापांचे निरीक्षण करणे.',
+    },
+    loginPage: {
+      welcomeBack: 'स्वागत आहे',
+      joinAgri: 'AgriAgent मध्ये सामील व्हा',
+      accessDashboard: 'तुमच्या स्मार्ट शेती डॅशबोर्डवर प्रवेश करा',
+      startJourney: 'स्मार्ट शेतीसह तुमचा प्रवास सुरू करा',
+      signIn: 'साइन इन करा',
+      signUp: 'साइन अप करा',
+      newToAgri: 'AgriAgent वर नवीन आहात?',
+      alreadyAccount: 'आधीच खाते आहे?',
+      createAccount: 'खाते तयार करा'
+    }
+  },
+  hi: {
+    nav: {
+      home: 'होम',
+      diagnose: 'निदान',
+      market: 'बाजार',
+      weather: 'मौसम',
+      team: 'टीम',
+      login: 'लॉगिन',
+      logout: 'लॉगआउट',
+      simulate: 'डिजिटल ट्विन',
+      finance: 'वित्त'
+    },
+    vaani: {
+      title: 'कृषि-वाणी',
+      subtitle: 'मुझसे अपनी भाषा में बात करें। टाइप करने की ज़रूरत नहीं है।',
+      listening: 'सुन रहा हूँ...',
+      processing: 'सोच रहा हूँ...',
+      speaking: 'बोल रहा हूँ...',
+      start: 'बोलने के लिए टैप करें',
+      stop: 'रुकें',
+      error: 'क्षमा करें, मैं समझ नहीं पाया। कृपया फिर से प्रयास करें।',
+      welcome: 'नमस्ते! मैं कृषि-वाणी हूँ। अपनी फसलों, मौसम या बाजार की कीमतों के बारे में मुझसे कुछ भी पूछें।'
+    },
+    finance: {
+      title: 'कृषि-वित्त और ऋण',
+      subtitle: 'विशेष माइक्रो-लोन, बीमा और स्मार्ट वित्तीय नियोजन के साथ विकास करें।',
+      creditScore: 'कृषि-कredit स्कोर',
+      eligibility: 'ऋण पात्रता',
+      applyNow: 'अभी आवेदन करें',
+      microLoans: 'माइक्रो-लोन',
+      insurance: 'फसल बीमा',
+      trackExpenses: 'खर्च ट्रैकर',
+      totalSavings: 'अनुमानित बचत',
+      loanDescription: 'बीज और उर्वरकों के लिए 24 घंटे के भीतर कम ब्याज दर पर ऋण प्राप्त करें।',
+      insureDescription: 'पुणे में बेमौसम बारिश और सूखे से अपनी फसल को सुरक्षित रखें।',
+      authRequired: 'खाता आवश्यक है',
+      authDesc: 'अपना क्रेडिट स्कोर देखने और ऋण के लिए आवेदन करने के लिए कृपया साइन इन करें या खाता बनाएं।',
+      loginToView: 'स्कोर देखने के लिए लॉगिन करें',
+      insurancePlans: 'उपलब्ध बीमा योजनाएं',
+      viewPlans: 'सक्रिय योजनाएं देखें'
+    },
+    simulation: {
+      title: 'डिजिटल ट्विन सिमुलेशन',
+      subtitle: 'वास्तविक जीवन में लागू करने से पहले फसल के निर्णयों और परिणामों का पूर्वानुमान लगाएं।',
+      controls: 'सिमुलेशन नियंत्रण',
+      cropType: 'फसल का प्रकार',
+      waterInput: 'सिंचाई (लीटर/दिन)',
+      fertilizerInput: 'उर्वरक (किग्रा/हेक्टेयर)',
+      forecast: 'पूर्वानुमान परिणाम',
+      yield: 'अनुमानित उपज',
+      soilHealth: 'मिट्टी की स्थिरता',
+      cost: 'अनुमानित लागत',
+      runSim: 'पूर्वानुमान की पुनर्गणना कर रहा है...',
+      optimization: 'अनुकूलन टिप'
+    },
+    homePage: {
+      heroTag: 'पुणे क्षेत्र के लिए कृषि-तकनीक अनुकूलित',
+      heroTitle: 'AgriAgent – स्मार्ट खेती के लिए AI-संचालित फसल सलाहकार',
+      heroSubtitle: 'पुणे और महाराष्ट्र के किसानों के लिए रियल-टाइम निदान और बाजार की जानकारी। अपनी उपज बढ़ाने के लिए AI की शक्ति का उपयोग करें।',
+      getStarted: 'शुरू करें',
+      viewSolution: 'समाधान देखें',
+      impactLabel: 'क्षेत्रीय प्रभाव',
+      aboutTitle: 'भविष्य की खेती',
+      aboutDesc: 'AgriAgent एक AI-संचालित फसल सलाहकार प्रणाली है जो पुणे क्षेत्र के किसानों को मिट्टी के डेटा, स्थानीय जलवायु और मंडी रुझानों का विश्लेषण करके डेटा-आधारित निर्णय लेने में मदद करती है।',
+      aiDecisions: 'AI-संचालित निर्णय',
+      sustainableOutcomes: 'स्थायी परिणाम',
+      mandiIntegration: 'मंडी एकीकरण',
+      ctaTitle: 'AI के साथ किसानों को सशक्त बनाना',
+      ctaSubtitle: 'पुणे के हजारों स्मार्ट किसानों से जुड़ें जो पहले से ही AgriAgent के साथ अपनी उपज बढ़ा रहे हैं।',
+      ctaButton: 'आज ही AgriAgent से जुड़ें'
+    },
+    diagnosePage: {
+      title: 'फसल निदान',
+      subtitle: 'रोगों या कमियों की तुरंत पहचान करने के लिए अपनी फसल की फोटो लें।',
+      takePhoto: 'फोटो लें',
+      uploadImage: 'फोटो अपलोड करें',
+      analyzing: 'फसल का विश्लेषण कर रहा है...',
+      runAi: 'AI निदान चलाएं',
+      severity: 'तीव्रता',
+      confidence: 'आत्मविश्वास',
+      recommendedActions: 'अनुशंसित क्रियाएं'
+    },
+    teamPage: {
+      title: 'हमारी कोर टीम से मिलें',
+      subtitle: 'एआई-संचालित कृषि की अगली पीढ़ी के लिए तकनीकी उत्कृष्टता और रचनात्मक डिजाइन।',
+    },
+    sustainability: {
+      title: 'सतत कृषि',
+      subtitle: 'एआई अनुकूलन के माध्यम से हरित भविष्य के लिए हमारी प्रतिबद्धता।',
+      precision: 'सटीक खेती',
+      precisionDesc: 'एआई मिट्टी मानचित्रण का उपयोग करके पानी और उर्वरक की बर्बादी को 30% तक कम करना।',
+      soil: 'मिट्टी का स्वास्थ्य',
+      soilDesc: 'दीर्घकालिक उर्वरता सुनिश्चित करने के लिए कार्बनिक पदार्थों और सूक्ष्मजीव गतिविधि की निगरानी करना।',
+    },
+    loginPage: {
+      welcomeBack: 'स्वागत है',
+      joinAgri: 'AgriAgent से जुड़ें',
+      accessDashboard: 'अपने स्मार्ट खेती डैशबोर्ड तक पहुंचें',
+      startJourney: 'स्मार्ट खेती के साथ आपकी यात्रा शुरू करें',
+      signIn: 'साइन इन करें',
+      signUp: 'साइन अप करें',
+      newToAgri: 'AgriAgent पर नए हैं?',
+      alreadyAccount: 'क्या आपके पास पहले से खाता है?',
+      createAccount: 'खाता बनाएं'
+    }
+  }
+};
+
+export const getTranslation = (lang: Language) => {
+  return translations[lang] || translations.en;
+};
