@@ -12,6 +12,9 @@ import LoginPage from './pages/LoginPage';
 import SustainabilityPage from './pages/SustainabilityPage';
 import SimulationPage from './pages/SimulationPage';
 import FinancePage from './pages/FinancePage';
+import AcademyPage from './pages/AcademyPage';
+import SchemesPage from './pages/SchemesPage';
+import StorePage from './pages/StorePage';
 import ChatBot from './components/ChatBot';
 import AgriVaani from './components/AgriVaani';
 import { supabase } from './lib/supabase';
@@ -52,6 +55,12 @@ const App: React.FC = () => {
         return <SimulationPage language={language} />;
       case Page.Finance:
         return <FinancePage language={language} user={session?.user} onNavigate={setCurrentPage} />;
+      case Page.Academy:
+        return <AcademyPage language={language} />;
+      case Page.Schemes:
+        return <SchemesPage language={language} />;
+      case Page.Store:
+        return <StorePage language={language} />;
       case Page.Login:
         return <LoginPage onLogin={() => setCurrentPage(Page.Home)} language={language} />;
       default:

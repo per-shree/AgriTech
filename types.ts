@@ -8,7 +8,10 @@ export enum Page {
   Login = 'login',
   Sustainability = 'sustainability',
   Simulation = 'simulation',
-  Finance = 'finance'
+  Finance = 'finance',
+  Academy = 'academy',
+  Schemes = 'schemes',
+  Store = 'store'
 }
 
 export interface DiagnosisResult {

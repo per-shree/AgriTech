@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Page } from '../types';
-import { Leaf, Menu, X, User, Globe, LogOut } from 'lucide-react';
+import { Leaf, Menu, X, User, Globe, LogOut, GraduationCap, Landmark, ShoppingBag } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Language, getTranslation } from '../translations';
 
@@ -22,8 +22,11 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate, user, language
     { name: t.diagnose, page: Page.Diagnose },
     { name: t.market, page: Page.Market },
     { name: t.weather, page: Page.Weather },
+    { name: t.schemes, page: Page.Schemes },
     { name: t.simulate, page: Page.Simulation },
     { name: t.finance, page: Page.Finance },
+    { name: t.academy, page: Page.Academy },
+    { name: t.store, page: Page.Store, isComingSoon: true },
     { name: t.team, page: Page.Team },
   ];
 
@@ -44,8 +47,8 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate, user, language
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-6">
-            <div className="flex items-center bg-slate-50 p-1 rounded-xl mr-4 border border-slate-100">
+          <div className="hidden xl:flex items-center space-x-2">
+            <div className="flex items-center bg-slate-50 p-1 rounded-xl mr-2 border border-slate-100">
               {(['en', 'mr', 'hi'] as Language[]).map((lang) => (
                 <button
                   key={lang}
@@ -63,21 +66,28 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate, user, language
               <button
                 key={item.page}
                 onClick={() => onNavigate(item.page)}
-                className={`text-xs lg:text-sm font-medium transition-colors hover:text-emerald-600 whitespace-nowrap ${
-                  currentPage === item.page ? 'text-emerald-600' : 'text-slate-600'
+                className={`text-[11px] font-bold transition-colors hover:text-emerald-600 whitespace-nowrap flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl relative group ${
+                  currentPage === item.page ? 'text-emerald-600 bg-emerald-50' : 'text-slate-600'
                 }`}
               >
+                {item.page === Page.Academy && <GraduationCap className="h-4 w-4" />}
+                {item.page === Page.Schemes && <Landmark className="h-3.5 w-3.5" />}
+                {item.page === Page.Store && <ShoppingBag className="h-3.5 w-3.5" />}
                 {item.name}
+                {item.isComingSoon && (
+                  <span className="absolute -top-1 -right-1 bg-amber-400 text-white text-[7px] font-black px-1 py-0.5 rounded shadow-sm group-hover:scale-110 transition-transform">
+                    {t.comingSoon}
+                  </span>
+                )}
               </button>
             ))}
 
             {user ? (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 pl-4">
                 <div className="flex items-center gap-2 text-sm font-bold text-slate-700">
-                  <div className="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center border border-emerald-200">
                     {user.email?.[0].toUpperCase()}
                   </div>
-                  <span className="hidden lg:inline">{user.email?.split('@')[0]}</span>
                 </div>
                 <button 
                   onClick={handleLogout}
@@ -90,7 +100,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate, user, language
             ) : (
               <button
                 onClick={() => onNavigate(Page.Login)}
-                className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-full text-xs font-medium hover:bg-emerald-700 transition-all shadow-md shadow-emerald-200"
+                className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-full text-xs font-bold hover:bg-emerald-700 transition-all shadow-md shadow-emerald-200"
               >
                 <User className="h-4 w-4" />
                 {t.login}
@@ -99,7 +109,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate, user, language
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-4">
+          <div className="xl:hidden flex items-center gap-4">
              <button onClick={() => onLanguageChange(language === 'en' ? 'mr' : (language === 'mr' ? 'hi' : 'en'))} className="text-slate-400">
               <Globe className="h-5 w-5" />
             </button>
@@ -112,7 +122,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate, user, language
 
       {/* Mobile Nav */}
       {isOpen && (
-        <div className="md:hidden bg-white border-b border-emerald-100 animate-in slide-in-from-top duration-300">
+        <div className="xl:hidden bg-white border-b border-emerald-100 animate-in slide-in-from-top duration-300">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navItems.map((item) => (
               <button
@@ -121,11 +131,23 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate, user, language
                   onNavigate(item.page);
                   setIsOpen(false);
                 }}
-                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
+                className={`block w-full text-left px-3 py-3 rounded-xl text-base font-bold ${
                   currentPage === item.page ? 'text-emerald-600 bg-emerald-50' : 'text-slate-600 hover:bg-slate-50'
                 }`}
               >
-                {item.name}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    {item.page === Page.Academy && <GraduationCap className="h-5 w-5" />}
+                    {item.page === Page.Schemes && <Landmark className="h-5 w-5" />}
+                    {item.page === Page.Store && <ShoppingBag className="h-5 w-5" />}
+                    {item.name}
+                  </div>
+                  {item.isComingSoon && (
+                    <span className="bg-amber-400 text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest">
+                      {t.comingSoon}
+                    </span>
+                  )}
+                </div>
               </button>
             ))}
           </div>

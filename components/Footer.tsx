@@ -28,29 +28,34 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
           
           <div>
-            <h4 className="font-semibold mb-4 text-emerald-400">Platform</h4>
+            <h4 className="font-semibold mb-4 text-emerald-400 text-xs uppercase tracking-widest">Platform</h4>
             <ul className="space-y-2 text-sm text-emerald-200/70">
               <li><button onClick={() => onNavigate(Page.Diagnose)} className="hover:text-white">Crop Diagnosis</button></li>
               <li><button onClick={() => onNavigate(Page.Market)} className="hover:text-white">Market Insights</button></li>
+              <li><button onClick={() => onNavigate(Page.Store)} className="hover:text-white">AgriStore <span className="text-[10px] text-amber-400 font-bold ml-1">Soon</span></button></li>
+              <li><button onClick={() => onNavigate(Page.Schemes)} className="hover:text-white">Govt. Schemes</button></li>
               <li><button onClick={() => onNavigate(Page.Weather)} className="hover:text-white">Weather Forecast</button></li>
-              <li><button onClick={() => onNavigate(Page.Finance)} className="hover:text-white">Agri-Finance</button></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4 text-emerald-400">Company</h4>
+            <h4 className="font-semibold mb-4 text-emerald-400 text-xs uppercase tracking-widest">Company</h4>
             <ul className="space-y-2 text-sm text-emerald-200/70">
               <li><button onClick={() => onNavigate(Page.Team)} className="hover:text-white">About Us</button></li>
+              <li><button onClick={() => onNavigate(Page.Academy)} className="hover:text-white">AgriAcademy</button></li>
               <li><button onClick={() => onNavigate(Page.Sustainability)} className="hover:text-white font-bold text-emerald-400">Sustainability</button></li>
               <li><button className="hover:text-white">Privacy Policy</button></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4 text-emerald-400">Contact</h4>
-            <div className="flex items-start text-sm text-emerald-200/70">
-              <Mail className="h-4 w-4 mr-2 mt-0.5" />
-              <span>support@agriagent.ai</span>
+            <h4 className="font-semibold mb-4 text-emerald-400 text-xs uppercase tracking-widest">Contact</h4>
+            <div className="flex flex-col gap-4 text-sm text-emerald-200/70">
+              <div className="flex items-start">
+                <Mail className="h-4 w-4 mr-2 mt-0.5" />
+                <span>support@agriagent.ai</span>
+              </div>
+              <p className="text-[10px] opacity-40">Regional HQ: Pune, Maharashtra, India</p>
             </div>
           </div>
         </div>

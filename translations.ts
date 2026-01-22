@@ -12,7 +12,49 @@ export const translations = {
       login: 'Login',
       logout: 'Logout',
       simulate: 'Digital Twin',
-      finance: 'Finance'
+      finance: 'Finance',
+      academy: 'Academy',
+      schemes: 'Schemes',
+      store: 'Store',
+      comingSoon: 'Soon'
+    },
+    store: {
+      title: 'AgriStore Marketplace',
+      subtitle: 'Premium seeds, organic fertilizers, and smart tools delivered directly to your farm. Launching soon in Pune region.',
+      notifyMe: 'Notify Me on Launch',
+      stayTuned: 'Stay Tuned',
+      features: {
+        seeds: 'Certified Seeds',
+        tools: 'Modern Equipment',
+        bio: 'Bio-Fertilizers'
+      }
+    },
+    schemes: {
+      title: 'Government Schemes & Subsidies',
+      subtitle: 'Unlock financial support from Central and Maharashtra State governments tailored for your farm.',
+      searchPlaceholder: 'Search for schemes (e.g. Irrigation, Seeds)...',
+      applyNow: 'Check Eligibility',
+      benefit: 'Benefit',
+      eligibility: 'Eligibility',
+      categories: {
+        all: 'All',
+        finance: 'Finance',
+        irrigation: 'Irrigation',
+        equipment: 'Equipment',
+        insurance: 'Insurance'
+      }
+    },
+    academy: {
+      title: 'AgriAcademy',
+      subtitle: 'Modern farming for the next generation. Learn the art and science of agriculture through real-time data.',
+      courseTitle: 'Farming 101: The Gen-Z Guide',
+      modules: 'Course Modules',
+      dashboardTitle: 'Live Farmer Insight Dashboard',
+      videosTitle: 'Field Insight Videos',
+      startLearning: 'Start Learning',
+      seasonalGuide: 'Seasonal Crop Guide',
+      techFarming: 'Tech-Driven Farming',
+      soilBasics: 'Soil & Sustainability'
     },
     vaani: {
       title: 'Agri-Vaani',
@@ -118,7 +160,49 @@ export const translations = {
       login: 'लॉगिन',
       logout: 'लॉगआउट',
       simulate: 'डिजिटल ट्विन',
-      finance: 'वित्त'
+      finance: 'वित्त',
+      academy: 'अकादमी',
+      schemes: 'योजना',
+      store: 'स्टोअर',
+      comingSoon: 'लवकरच'
+    },
+    store: {
+      title: 'कृषी स्टोअर मार्केटप्लेस',
+      subtitle: 'प्रीमियम बियाणे, सेंद्रिय खते आणि स्मार्ट साधने थेट तुमच्या शेतात पोहोचवली जातील. पुणे विभागात लवकरच लाँच होत आहे.',
+      notifyMe: 'लाँच झाल्यावर मला कळवा',
+      stayTuned: 'संपर्कात रहा',
+      features: {
+        seeds: 'प्रमाणित बियाणे',
+        tools: 'आधुनिक यंत्रसामग्री',
+        bio: 'सेंद्रिय खते'
+      }
+    },
+    schemes: {
+      title: 'शासकीय योजना आणि अनुदाने',
+      subtitle: 'तुमच्या शेतीसाठी केंद्र आणि महाराष्ट्र राज्य सरकारकडून आर्थिक मदत मिळवा.',
+      searchPlaceholder: 'योजना शोधा (उदा. सिंचन, बियाणे)...',
+      applyNow: 'पात्रता तपासा',
+      benefit: 'फायदा',
+      eligibility: 'पात्रता',
+      categories: {
+        all: 'सर्व',
+        finance: 'वित्त',
+        irrigation: 'सिंचन',
+        equipment: 'यंत्रसामग्री',
+        insurance: 'विमा'
+      }
+    },
+    academy: {
+      title: 'AgriAcademy',
+      subtitle: 'पुढच्या पिढीसाठी आधुनिक शेती. रिअल-टाइम डेटाद्वारे शेतीची कला आणि विज्ञान शिका.',
+      courseTitle: 'शेती १०१: जेन-झी मार्गदर्शक',
+      modules: 'कोर्स मॉड्युल्स',
+      dashboardTitle: 'लाइव्ह फार्मर इनसाइट डॅशबोर्ड',
+      videosTitle: 'फील्ड इनसाइट व्हिडिओ',
+      startLearning: 'शिकण्यास सुरुवात करा',
+      seasonalGuide: 'हंगामी पीक मार्गदर्शक',
+      techFarming: 'तंत्रज्ञान-चालित शेती',
+      soilBasics: 'जमीन आणि शाश्वतता'
     },
     vaani: {
       title: 'कृषी-वाणी',
@@ -224,7 +308,49 @@ export const translations = {
       login: 'लॉगिन',
       logout: 'लॉगआउट',
       simulate: 'डिजिटल ट्विन',
-      finance: 'वित्त'
+      finance: 'वित्त',
+      academy: 'अकादमी',
+      schemes: 'योजनाएं',
+      store: 'स्टोर',
+      comingSoon: 'जल्द'
+    },
+    store: {
+      title: 'कृषि स्टोर मार्केटप्लेस',
+      subtitle: 'प्रीमियम बीज, जैविक उर्वरक और स्मार्ट उपकरण सीधे आपके खेत में पहुँचाए जाएँगे। पुणे क्षेत्र में जल्द ही लॉन्च हो रहा है।',
+      notifyMe: 'लॉन्च होने पर मुझे सूचित करें',
+      stayTuned: 'जुड़े रहें',
+      features: {
+        seeds: 'प्रमाणित बीज',
+        tools: 'आधुनिक उपकरण',
+        bio: 'जैविक उर्वरक'
+      }
+    },
+    schemes: {
+      title: 'सरकारी योजनाएं और सब्सिडी',
+      subtitle: 'अपने खेत के लिए केंद्र और महाराष्ट्र राज्य सरकारों से वित्तीय सहायता प्राप्त करें।',
+      searchPlaceholder: 'योजनाएं खोजें (उदा. सिंचाई, बीज)...',
+      applyNow: 'पात्रता जांचें',
+      benefit: 'लाभ',
+      eligibility: 'पात्रता',
+      categories: {
+        all: 'सभी',
+        finance: 'वित्त',
+        irrigation: 'सिंचाई',
+        equipment: 'उपकरण',
+        insurance: 'बीमा'
+      }
+    },
+    academy: {
+      title: 'AgriAcademy',
+      subtitle: 'अगली पीढ़ी के लिए आधुनिक खेती। रियल-टाइम डेटा के माध्यम से खेती की कला और विज्ञान सीखें।',
+      courseTitle: 'खेती १०१: जेन-ज़ी गाइड',
+      modules: 'कोर्स मॉड्यूल',
+      dashboardTitle: 'लाइव किसान इनसाइट डैशबोर्ड',
+      videosTitle: 'फील्ड इनसाइट वीडियो',
+      startLearning: 'सीखना शुरू करें',
+      seasonalGuide: 'मौसमी फसल गाइड',
+      techFarming: 'तकनीक-संचालित खेती',
+      soilBasics: 'मिट्टी और स्थिरता'
     },
     vaani: {
       title: 'कृषि-वाणी',
@@ -235,7 +361,7 @@ export const translations = {
       start: 'बोलने के लिए टैप करें',
       stop: 'रुकें',
       error: 'क्षमा करें, मैं समझ नहीं पाया। कृपया फिर से प्रयास करें।',
-      welcome: 'नमस्ते! मैं कृषि-वाणी हूँ। अपनी फसलों, मौसम या बाजार की कीमतों के बारे में मुझसे कुछ भी पूछें।'
+      welcome: 'नमस्ते! मैं कृषि-वाणी हूँ। अपनी फसलों, मौसम या बाजार की कीमतों के बारे में मुझसे कुछ भी पूछें।',
     },
     finance: {
       title: 'कृषि-वित्त और ऋण',
@@ -280,7 +406,7 @@ export const translations = {
       aboutDesc: 'AgriAgent एक AI-संचालित फसल सलाहकार प्रणाली है जो पुणे क्षेत्र के किसानों को मिट्टी के डेटा, स्थानीय जलवायु और मंडी रुझानों का विश्लेषण करके डेटा-आधारित निर्णय लेने में मदद करती है।',
       aiDecisions: 'AI-संचालित निर्णय',
       sustainableOutcomes: 'स्थायी परिणाम',
-      mandiIntegration: 'मंडी एकीकरण',
+      mandiIntegration: 'मandi एकीकरण',
       ctaTitle: 'AI के साथ किसानों को सशक्त बनाना',
       ctaSubtitle: 'पुणे के हजारों स्मार्ट किसानों से जुड़ें जो पहले से ही AgriAgent के साथ अपनी उपज बढ़ा रहे हैं।',
       ctaButton: 'आज ही AgriAgent से जुड़ें'
