@@ -265,7 +265,8 @@ const AcademyPage: React.FC<AcademyPageProps> = ({ language }) => {
                           {cropPopularity.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
-                        </BarChart>
+                        </Bar>
+                      </BarChart>
                     </ResponsiveContainer>
                   </div>
                 </div>

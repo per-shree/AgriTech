@@ -61,7 +61,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
         
         <div className="border-t border-emerald-900 pt-8 text-center text-xs text-emerald-200/40">
-          <p>© {new Date().getFullYear()} AgriAgent AI. All rights reserved. Building the future of agriculture.</p>
+          <p>Design by <a href="https://qwicit.com/" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">Qwicit</a></p>
         </div>
       </div>
     </footer>
