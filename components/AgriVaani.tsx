@@ -8,6 +8,21 @@ interface AgriVaaniProps {
   language: Language;
 }
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+const fetchWithRetry = async (fn: () => Promise<any>, retries = 3, backoff = 1000): Promise<any> => {
+  try {
+    return await fn();
+  } catch (error: any) {
+    if (retries > 0 && (error.status === 429 || error.message?.includes('Rate exceeded') || error.message?.includes('429') || error.message?.includes('Quota'))) {
+      console.warn(`Rate limit exceeded. Retrying in ${backoff}ms...`);
+      await delay(backoff);
+      return fetchWithRetry(fn, retries - 1, backoff * 2);
+    }
+    throw error;
+  }
+};
+
 const AgriVaani: React.FC<AgriVaaniProps> = ({ language }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -101,10 +116,10 @@ const AgriVaani: React.FC<AgriVaaniProps> = ({ language }) => {
   const processWithGemini = async (userText: string) => {
     setIsProcessing(true);
     try {
-      const ai = new GoogleGenAI({ apiKey: (process as any).env.API_KEY || '' });
+      const ai = new GoogleGenAI({ apiKey: (process as any).env.GEMINI_API_KEY || '' });
       
       // Step 1: Get Text Response
-      const response = await ai.models.generateContent({
+      const response = await fetchWithRetry(() => ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: userText,
         config: {
@@ -113,13 +128,13 @@ const AgriVaani: React.FC<AgriVaaniProps> = ({ language }) => {
           Keep your answer very short (max 2 sentences) because it will be spoken out loud. 
           Use simple words. Do not use markdown.`,
         }
-      });
+      }));
 
       const textOutput = response.text || '';
       setResponse(textOutput);
 
       // Step 2: Convert to Speech using Gemini TTS
-      const ttsResponse = await ai.models.generateContent({
+      const ttsResponse = await fetchWithRetry(() => ai.models.generateContent({
         model: "gemini-2.5-flash-preview-tts",
         contents: [{ parts: [{ text: textOutput }] }],
         config: {
@@ -130,7 +145,7 @@ const AgriVaani: React.FC<AgriVaaniProps> = ({ language }) => {
             },
           },
         },
-      });
+      }));
 
       const base64Audio = (ttsResponse as any).candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
       if (base64Audio) {

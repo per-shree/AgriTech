@@ -1,12 +1,27 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-const API_KEY = process.env.API_KEY || "";
+const API_KEY = process.env.GEMINI_API_KEY || "";
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+const fetchWithRetry = async (fn: () => Promise<any>, retries = 3, backoff = 1000): Promise<any> => {
+  try {
+    return await fn();
+  } catch (error: any) {
+    if (retries > 0 && (error.status === 429 || error.message?.includes('Rate exceeded') || error.message?.includes('429') || error.message?.includes('Quota'))) {
+      console.warn(`Rate limit exceeded. Retrying in ${backoff}ms...`);
+      await delay(backoff);
+      return fetchWithRetry(fn, retries - 1, backoff * 2);
+    }
+    throw error;
+  }
+};
 
 export const analyzeCropImage = async (base64Image: string) => {
   const ai = new GoogleGenAI({ apiKey: API_KEY });
   
-  const response = await ai.models.generateContent({
+  const response = await fetchWithRetry(() => ai.models.generateContent({
     model: 'gemini-3-flash-preview',
     contents: {
       parts: [
@@ -38,7 +53,7 @@ export const analyzeCropImage = async (base64Image: string) => {
         required: ["disease", "severity", "description", "recommendations", "confidence"]
       }
     }
-  });
+  }));
 
   return JSON.parse(response.text);
 };
