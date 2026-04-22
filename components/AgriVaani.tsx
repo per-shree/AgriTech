@@ -1,37 +1,19 @@
-
-import React, { useState, useEffect, useRef } from 'react';
-import { Mic, MicOff, Volume2, Loader2, X, Sparkles, MessageCircle } from 'lucide-react';
-import { GoogleGenAI, Modality } from '@google/genai';
-import { Language, getTranslation } from '../translations';
+import React, { useState, useRef, useEffect } from 'react';
+import { GoogleGenAI, Modality } from "@google/genai";
+import { Mic, MicOff, Volume2, VolumeX, Loader2, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface AgriVaaniProps {
-  language: Language;
+  language: 'en' | 'hi' | 'mr';
 }
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-const fetchWithRetry = async (fn: () => Promise<any>, retries = 3, backoff = 1000): Promise<any> => {
-  try {
-    return await fn();
-  } catch (error: any) {
-    if (retries > 0 && (error.status === 429 || error.message?.includes('Rate exceeded') || error.message?.includes('429') || error.message?.includes('Quota'))) {
-      console.warn(`Rate limit exceeded. Retrying in ${backoff}ms...`);
-      await delay(backoff);
-      return fetchWithRetry(fn, retries - 1, backoff * 2);
-    }
-    throw error;
-  }
-};
-
 const AgriVaani: React.FC<AgriVaaniProps> = ({ language }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [transcript, setTranscript] = useState('');
   const [response, setResponse] = useState('');
-  const t = getTranslation(language).vaani;
-
+  const [transcript, setTranscript] = useState('');
+  
   const recognitionRef = useRef<any>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const sourceRef = useRef<AudioBufferSourceNode | null>(null);
@@ -42,10 +24,7 @@ const AgriVaani: React.FC<AgriVaaniProps> = ({ language }) => {
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = false;
-      
-      // Set language based on app language
-      const langCode = language === 'mr' ? 'mr-IN' : (language === 'hi' ? 'hi-IN' : 'en-IN');
-      recognitionRef.current.lang = langCode;
+      recognitionRef.current.lang = language === 'mr' ? 'mr-IN' : (language === 'hi' ? 'hi-IN' : 'en-US');
 
       recognitionRef.current.onresult = (event: any) => {
         const text = event.results[0][0].transcript;
@@ -53,16 +32,21 @@ const AgriVaani: React.FC<AgriVaaniProps> = ({ language }) => {
         processWithGemini(text);
       };
 
-      recognitionRef.current.onerror = () => {
-        setIsListening(false);
-        setTranscript(t.error);
-      };
-
       recognitionRef.current.onend = () => {
         setIsListening(false);
       };
+
+      recognitionRef.current.onerror = (event: any) => {
+        console.error('Speech recognition error', event.error);
+        setIsListening(false);
+      };
     }
-  }, [language, t.error]);
+
+    return () => {
+      if (recognitionRef.current) recognitionRef.current.stop();
+      stopSpeaking();
+    };
+  }, [language]);
 
   const toggleListening = () => {
     if (isListening) {
@@ -76,35 +60,6 @@ const AgriVaani: React.FC<AgriVaaniProps> = ({ language }) => {
     }
   };
 
-  const decode = (base64: string) => {
-    const binaryString = atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes;
-  };
-
-  const decodeAudioData = async (
-    data: Uint8Array,
-    ctx: AudioContext,
-    sampleRate: number,
-    numChannels: number,
-  ): Promise<AudioBuffer> => {
-    const dataInt16 = new Int16Array(data.buffer);
-    const frameCount = dataInt16.length / numChannels;
-    const buffer = ctx.createBuffer(numChannels, frameCount, sampleRate);
-
-    for (let channel = 0; channel < numChannels; channel++) {
-      const channelData = buffer.getChannelData(channel);
-      for (let i = 0; i < frameCount; i++) {
-        channelData[i] = dataInt16[i * numChannels + channel] / 32768.0;
-      }
-    }
-    return buffer;
-  };
-
   const stopSpeaking = () => {
     if (sourceRef.current) {
       sourceRef.current.stop();
@@ -116,10 +71,13 @@ const AgriVaani: React.FC<AgriVaaniProps> = ({ language }) => {
   const processWithGemini = async (userText: string) => {
     setIsProcessing(true);
     try {
-      const ai = new GoogleGenAI({ apiKey: (process as any).env.GEMINI_API_KEY || '' });
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) throw new Error('API Key missing');
+
+      const ai = new GoogleGenAI({ apiKey });
       
       // Step 1: Get Text Response
-      const response = await fetchWithRetry(() => ai.models.generateContent({
+      const textResponse = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: userText,
         config: {
@@ -128,14 +86,14 @@ const AgriVaani: React.FC<AgriVaaniProps> = ({ language }) => {
           Keep your answer very short (max 2 sentences) because it will be spoken out loud. 
           Use simple words. Do not use markdown.`,
         }
-      }));
+      });
 
-      const textOutput = response.text || '';
+      const textOutput = textResponse.text || '';
       setResponse(textOutput);
 
-      // Step 2: Convert to Speech using Gemini TTS
-      const ttsResponse = await fetchWithRetry(() => ai.models.generateContent({
-        model: "gemini-2.5-flash-preview-tts",
+      // Step 2: Convert to Speech
+      const ttsResponse = await ai.models.generateContent({
+        model: "gemini-3.1-flash-tts-preview",
         contents: [{ parts: [{ text: textOutput }] }],
         config: {
           responseModalities: [Modality.AUDIO],
@@ -145,119 +103,127 @@ const AgriVaani: React.FC<AgriVaaniProps> = ({ language }) => {
             },
           },
         },
-      }));
+      });
 
       const base64Audio = (ttsResponse as any).candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
       if (base64Audio) {
-        if (!audioContextRef.current) {
-          audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
-        }
-        
-        setIsSpeaking(true);
-        const audioBuffer = await decodeAudioData(
-          decode(base64Audio),
-          audioContextRef.current,
-          24000,
-          1,
-        );
-        
-        const source = audioContextRef.current.createBufferSource();
-        source.buffer = audioBuffer;
-        source.connect(audioContextRef.current.destination);
-        source.onended = () => setIsSpeaking(false);
-        source.start();
-        sourceRef.current = source;
+        playAudio(base64Audio);
       }
-
-    } catch (err) {
-      console.error(err);
-      setResponse(t.error);
+    } catch (error) {
+      console.error('AgriVaani Error:', error);
+      setResponse('Sorry, I encountered an error. Please try again.');
     } finally {
       setIsProcessing(false);
     }
   };
 
-  if (!isOpen) {
-    return (
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 z-[100] w-16 h-16 bg-amber-500 text-white rounded-full shadow-2xl hover:bg-amber-600 hover:scale-110 active:scale-95 transition-all flex items-center justify-center group"
-      >
-        <Volume2 className="h-8 w-8" />
-        <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-bounce">
-          LIVE
-        </div>
-        <span className="absolute left-20 bg-white text-slate-900 px-4 py-2 rounded-xl text-sm font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-amber-100">
-          {t.title} (Voice)
-        </span>
-      </button>
-    );
-  }
+  const playAudio = async (base64Data: string) => {
+    try {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+
+      // Gemini TTS returns raw PCM 16-bit at 24kHz
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+
+      // Convert Uint8Array (PCM 16-bit) to Float32Array for AudioBuffer
+      const int16Data = new Int16Array(bytes.buffer);
+      const float32Data = new Float32Array(int16Data.length);
+      
+      for (let i = 0; i < int16Data.length; i++) {
+        // Normalize Int16 [-32768, 32767] to Float32 [-1.0, 1.0]
+        float32Data[i] = int16Data[i] / 32768.0;
+      }
+
+      const audioBuffer = audioContextRef.current.createBuffer(
+        1, // Mono
+        float32Data.length,
+        24000 // Sample rate for Gemini TTS
+      );
+      audioBuffer.getChannelData(0).set(float32Data);
+
+      stopSpeaking();
+      
+      const source = audioContextRef.current.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContextRef.current.destination);
+      source.onended = () => setIsSpeaking(false);
+      
+      sourceRef.current = source;
+      setIsSpeaking(true);
+      source.start(0);
+    } catch (error) {
+      console.error('Audio Playback Error:', error);
+    }
+  };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="bg-white w-full max-w-lg rounded-[3rem] p-8 lg:p-12 shadow-2xl relative overflow-hidden flex flex-col items-center text-center">
-        <button 
-          onClick={() => {
-            stopSpeaking();
-            setIsOpen(false);
-          }}
-          className="absolute top-6 right-6 p-2 hover:bg-slate-100 rounded-full transition-colors"
-        >
-          <X className="h-6 w-6 text-slate-400" />
-        </button>
-
-        <div className="mb-8">
-          <div className="inline-flex items-center px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold mb-4">
-            <Sparkles className="h-3 w-3 mr-2" />
-            AI VOICE ASSISTANT
-          </div>
-          <h2 className="text-3xl font-bold text-slate-900 mb-2">{t.title}</h2>
-          <p className="text-slate-500">{t.subtitle}</p>
-        </div>
-
-        {/* Visual Pulse for Listening */}
-        <div className="relative mb-12 h-40 w-40 flex items-center justify-center">
-          {(isListening || isSpeaking) && (
-            <>
-              <div className="absolute inset-0 bg-amber-500/20 rounded-full animate-ping"></div>
-              <div className="absolute inset-4 bg-amber-500/30 rounded-full animate-ping [animation-delay:0.2s]"></div>
-            </>
+    <div className="fixed bottom-6 left-6 z-50">
+      <div className="flex flex-col items-start gap-4">
+        <AnimatePresence>
+          {(transcript || response || isProcessing) && (
+            <motion.div
+              initial={{ opacity: 0, x: -20, scale: 0.9 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: -20, scale: 0.9 }}
+              className="bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-emerald-100 max-w-xs md:max-w-md"
+            >
+              {transcript && (
+                <div className="mb-2">
+                  <span className="text-[10px] uppercase tracking-wider text-emerald-600 font-bold">You said</span>
+                  <p className="text-slate-600 text-sm italic">"{transcript}"</p>
+                </div>
+              )}
+              {isProcessing ? (
+                <div className="flex items-center gap-2 text-emerald-600">
+                  <Loader2 size={16} className="animate-spin" />
+                  <span className="text-sm font-medium">Thinking...</span>
+                </div>
+              ) : response && (
+                <div>
+                  <span className="text-[10px] uppercase tracking-wider text-emerald-600 font-bold">Agri-Vaani</span>
+                  <p className="text-slate-800 text-sm font-medium leading-relaxed">{response}</p>
+                </div>
+              )}
+            </motion.div>
           )}
-          <button 
+        </AnimatePresence>
+
+        <div className="flex items-center gap-3">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={toggleListening}
-            className={`relative z-10 w-28 h-28 rounded-full flex items-center justify-center shadow-xl transition-all ${
-              isListening ? 'bg-red-500 text-white scale-110' : 'bg-amber-500 text-white hover:scale-105'
+            className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all ${
+              isListening 
+                ? 'bg-red-500 text-white animate-pulse' 
+                : 'bg-emerald-600 text-white hover:bg-emerald-700'
             }`}
           >
-            {isListening ? <MicOff className="h-12 w-12" /> : <Mic className="h-12 w-12" />}
-          </button>
-        </div>
+            {isListening ? <MicOff size={24} /> : <Mic size={24} />}
+          </motion.button>
 
-        <div className="w-full space-y-6">
-          <div className="min-h-[60px]">
-            {isListening && <p className="text-amber-600 font-bold animate-pulse">{t.listening}</p>}
-            {isProcessing && <p className="text-slate-400 italic flex items-center justify-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin" /> {t.processing}
-            </p>}
-            {transcript && <p className="text-slate-900 font-medium bg-slate-50 p-4 rounded-2xl italic">"{transcript}"</p>}
-          </div>
+          {isSpeaking && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              onClick={stopSpeaking}
+              className="w-10 h-10 rounded-full bg-white border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-md"
+            >
+              <VolumeX size={18} />
+            </motion.button>
+          )}
 
-          <div className="min-h-[100px] border-t border-slate-100 pt-6">
-            {isSpeaking && <p className="text-emerald-600 font-bold flex items-center justify-center gap-2 mb-2">
-              <Volume2 className="h-4 w-4 animate-bounce" /> {t.speaking}
-            </p>}
-            {response && <p className="text-lg font-bold text-slate-800 leading-relaxed">{response}</p>}
-            {!transcript && !response && <p className="text-slate-400 text-sm">{t.welcome}</p>}
+          <div className="bg-emerald-900/80 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2 text-white text-xs font-medium border border-white/10 shadow-lg">
+            <Sparkles size={14} className="text-emerald-300" />
+            <span>Agri-Vaani Voice Assistant</span>
           </div>
         </div>
-
-        <button 
-          onClick={toggleListening}
-          className="mt-10 w-full py-4 bg-slate-900 text-white rounded-2xl font-bold text-lg hover:bg-slate-800 transition-all"
-        >
-          {isListening ? t.stop : t.start}
-        </button>
       </div>
     </div>
   );

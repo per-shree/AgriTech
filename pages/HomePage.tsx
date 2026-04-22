@@ -1,8 +1,9 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Page } from '../types';
-import { Sprout, Microscope, BarChart3, CloudSun, ArrowRight, ShieldCheck, Zap, Globe, MapPin } from 'lucide-react';
+import { Sprout, Microscope, BarChart3, CloudSun, ArrowRight, ShieldCheck, Zap, Globe, MapPin, Lightbulb, Loader2 } from 'lucide-react';
 import { Language, getTranslation } from '../translations';
+import { GoogleGenAI } from "@google/genai";
 
 interface HomePageProps {
   onNavigate: (page: Page) => void;
@@ -11,12 +12,57 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ onNavigate, language }) => {
   const t = getTranslation(language).homePage;
+  const [insight, setInsight] = useState<string>('');
+  const [loadingInsight, setLoadingInsight] = useState(false);
+
+  useEffect(() => {
+    const fetchInsight = async () => {
+      setLoadingInsight(true);
+      try {
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) return;
+        const ai = new GoogleGenAI({ apiKey });
+        const response = await ai.models.generateContent({
+          model: 'gemini-3-flash-preview',
+          contents: `Provide a single, powerful, one-sentence agricultural tip for a farmer in Maharashtra, India. Language: ${language === 'mr' ? 'Marathi' : (language === 'hi' ? 'Hindi' : 'English')}. Focus on sustainability or yield. No markdown.`,
+        });
+        setInsight(response.text || '');
+      } catch (error) {
+        console.error('Insight Error:', error);
+      } finally {
+        setLoadingInsight(false);
+      }
+    };
+    fetchInsight();
+  }, [language]);
 
   return (
     <div className="animate-in fade-in duration-700">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-12 pb-24 lg:pt-20 lg:pb-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Smart Insight Bar */}
+          <div className="mb-8 max-w-3xl mx-auto">
+            <div className="bg-emerald-900/5 backdrop-blur-sm border border-emerald-100 rounded-2xl p-4 flex items-center gap-4">
+              <div className="bg-emerald-600 p-2 rounded-xl text-white shrink-0">
+                <Lightbulb size={20} />
+              </div>
+              <div className="flex-grow">
+                <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-0.5">Smart Agri-Insight</p>
+                {loadingInsight ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 size={12} className="animate-spin text-emerald-600" />
+                    <div className="h-4 w-48 bg-emerald-100 rounded animate-pulse"></div>
+                  </div>
+                ) : (
+                  <p className="text-sm text-slate-700 font-medium leading-tight">
+                    {insight || "Optimize your crop yield with AI-driven precision farming techniques tailored for Maharashtra's soil."}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
           <div className="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
             <div className="mb-12 lg:mb-0">
               <div className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-sm font-medium mb-6">
