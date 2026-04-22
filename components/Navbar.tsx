@@ -27,7 +27,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate, user, language
     { name: t.finance, page: Page.Finance },
     { name: t.academy, page: Page.Academy },
     { name: t.store, page: Page.Store, isComingSoon: true },
-    { name: t.team, page: Page.Team },
   ];
 
   const handleLogout = async () => {

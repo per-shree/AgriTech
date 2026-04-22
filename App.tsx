@@ -4,7 +4,6 @@ import { Page } from './types';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
-import TeamPage from './pages/TeamPage';
 import LoginPage from './pages/LoginPage';
 import ChatBot from './components/ChatBot';
 import AgriVaani from './components/AgriVaani';
@@ -49,8 +48,6 @@ const App: React.FC = () => {
         return <MarketPage />;
       case Page.Weather:
         return <WeatherPage />;
-      case Page.Team:
-        return <TeamPage language={language} />;
       case Page.Sustainability:
         return <SustainabilityPage language={language} />;
       case Page.Simulation:

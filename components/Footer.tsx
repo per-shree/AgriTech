@@ -41,7 +41,6 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div>
             <h4 className="font-semibold mb-4 text-emerald-400 text-xs uppercase tracking-widest">Company</h4>
             <ul className="space-y-2 text-sm text-emerald-200/70">
-              <li><button onClick={() => onNavigate(Page.Team)} className="hover:text-white">About Us</button></li>
               <li><button onClick={() => onNavigate(Page.Academy)} className="hover:text-white">AgriAcademy</button></li>
               <li><button onClick={() => onNavigate(Page.Sustainability)} className="hover:text-white font-bold text-emerald-400">Sustainability</button></li>
               <li><button className="hover:text-white">Privacy Policy</button></li>

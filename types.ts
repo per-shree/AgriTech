@@ -4,7 +4,6 @@ export enum Page {
   Diagnose = 'diagnose',
   Market = 'market',
   Weather = 'weather',
-  Team = 'team',
   Login = 'login',
   Sustainability = 'sustainability',
   Simulation = 'simulation',
