@@ -12,7 +12,17 @@ export default defineConfig(({ mode }) => {
       },
       plugins: [react(), tailwindcss()],
       build: {
-        chunkSizeWarningLimit: 1600,
+        chunkSizeWarningLimit: 2000,
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              'vendor-firebase': ['firebase/app', 'firebase/auth', 'firebase/firestore'],
+              'vendor-charts': ['recharts'],
+              'vendor-genai': ['@google/genai'],
+              'vendor-ui': ['lucide-react', 'motion'],
+            }
+          }
+        }
       },
       define: {
         'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || process.env.GEMINI_API_KEY),

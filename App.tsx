@@ -1,24 +1,26 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Page } from './types';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
-import DiagnosePage from './pages/DiagnosePage';
-import MarketPage from './pages/MarketPage';
-import WeatherPage from './pages/WeatherPage';
 import TeamPage from './pages/TeamPage';
 import LoginPage from './pages/LoginPage';
-import SustainabilityPage from './pages/SustainabilityPage';
-import SimulationPage from './pages/SimulationPage';
-import FinancePage from './pages/FinancePage';
-import AcademyPage from './pages/AcademyPage';
-import SchemesPage from './pages/SchemesPage';
-import StorePage from './pages/StorePage';
 import ChatBot from './components/ChatBot';
 import AgriVaani from './components/AgriVaani';
 import { supabase } from './lib/supabase';
 import { Language } from './translations';
+import { Analytics } from '@vercel/analytics/react';
+
+const DiagnosePage = lazy(() => import('./pages/DiagnosePage'));
+const MarketPage = lazy(() => import('./pages/MarketPage'));
+const WeatherPage = lazy(() => import('./pages/WeatherPage'));
+const SustainabilityPage = lazy(() => import('./pages/SustainabilityPage'));
+const SimulationPage = lazy(() => import('./pages/SimulationPage'));
+const FinancePage = lazy(() => import('./pages/FinancePage'));
+const AcademyPage = lazy(() => import('./pages/AcademyPage'));
+const SchemesPage = lazy(() => import('./pages/SchemesPage'));
+const StorePage = lazy(() => import('./pages/StorePage'));
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>(Page.Home);
@@ -78,11 +80,18 @@ const App: React.FC = () => {
         onLanguageChange={setLanguage}
       />
       <main className="flex-grow pt-16">
-        {renderPage()}
+        <Suspense fallback={
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        }>
+          {renderPage()}
+        </Suspense>
       </main>
       <Footer onNavigate={setCurrentPage} />
       <ChatBot />
       <AgriVaani language={language} />
+      <Analytics />
     </div>
   );
 };
