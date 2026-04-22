@@ -29,6 +29,12 @@ const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('en');
   const [session, setSession] = useState<any>(null);
   const [appLoading, setAppLoading] = useState(true);
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+
+  const showNotification = (message: string, type: 'success' | 'error' | 'info' = 'info') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 5000);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -46,31 +52,32 @@ const App: React.FC = () => {
   }, []);
 
   const renderPage = () => {
+    const props = { language, showNotification };
     switch (currentPage) {
       case Page.Home:
-        return <HomePage onNavigate={setCurrentPage} language={language} />;
+        return <HomePage onNavigate={setCurrentPage} {...props} />;
       case Page.Diagnose:
-        return <DiagnosePage language={language} />;
+        return <DiagnosePage {...props} />;
       case Page.Market:
-        return <MarketPage />;
+        return <MarketPage {...props} />;
       case Page.Weather:
         return <WeatherPage />;
       case Page.Sustainability:
-        return <SustainabilityPage language={language} />;
+        return <SustainabilityPage {...props} />;
       case Page.Simulation:
-        return <SimulationPage language={language} />;
+        return <SimulationPage {...props} />;
       case Page.Finance:
-        return <FinancePage language={language} user={session?.user} onNavigate={setCurrentPage} />;
+        return <FinancePage user={session?.user} onNavigate={setCurrentPage} {...props} />;
       case Page.Academy:
-        return <AcademyPage language={language} />;
+        return <AcademyPage {...props} />;
       case Page.Schemes:
-        return <SchemesPage language={language} />;
+        return <SchemesPage {...props} />;
       case Page.Store:
-        return <StorePage language={language} />;
+        return <StorePage {...props} />;
       case Page.Login:
-        return <LoginPage onLogin={() => setCurrentPage(Page.Home)} language={language} />;
+        return <LoginPage onLogin={() => setCurrentPage(Page.Home)} {...props} />;
       default:
-        return <HomePage onNavigate={setCurrentPage} language={language} />;
+        return <HomePage onNavigate={setCurrentPage} {...props} />;
     }
   };
 
@@ -120,6 +127,43 @@ const App: React.FC = () => {
                   className="w-2 h-2 bg-emerald-600 rounded-full"
                 />
               ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {notification && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] w-full max-w-sm px-4"
+          >
+            <div className={`
+              flex items-center gap-4 p-5 rounded-[1.5rem] shadow-2xl border backdrop-blur-md
+              ${notification.type === 'success' ? 'bg-emerald-900/90 border-emerald-400/30 text-emerald-50' : 
+                notification.type === 'error' ? 'bg-red-900/90 border-red-400/30 text-red-50' : 
+                'bg-slate-900/90 border-slate-400/30 text-slate-50'}
+            `}>
+              <div className={`p-2 rounded-xl ${
+                notification.type === 'success' ? 'bg-emerald-500/20 text-emerald-400' : 
+                notification.type === 'error' ? 'bg-red-500/20 text-red-400' : 
+                'bg-blue-500/20 text-blue-400'
+              }`}>
+                {notification.type === 'success' ? <CheckCircle2 className="h-6 w-6" /> : 
+                 notification.type === 'error' ? <AlertCircle className="h-6 w-6" /> : 
+                 <Leaf className="h-6 w-6" />}
+              </div>
+              <div className="flex-grow">
+                <p className="text-sm font-bold leading-tight">{notification.message}</p>
+              </div>
+              <button 
+                onClick={() => setNotification(null)}
+                className="p-1 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <X className="h-4 w-4 opacity-50" />
+              </button>
             </div>
           </motion.div>
         )}

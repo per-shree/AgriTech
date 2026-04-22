@@ -10,9 +10,10 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 interface DiagnosePageProps {
   language: Language;
+  showNotification: (message: string, type?: 'success' | 'error' | 'info') => void;
 }
 
-const DiagnosePage: React.FC<DiagnosePageProps> = ({ language }) => {
+const DiagnosePage: React.FC<DiagnosePageProps> = ({ language, showNotification }) => {
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<DiagnosisResult | null>(null);

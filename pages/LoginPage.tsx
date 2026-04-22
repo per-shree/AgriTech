@@ -8,9 +8,10 @@ import { Language, getTranslation } from '../translations';
 interface LoginPageProps {
   onLogin: () => void;
   language: Language;
+  showNotification: (message: string, type?: 'success' | 'error' | 'info') => void;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({ onLogin, language }) => {
+const LoginPage: React.FC<LoginPageProps> = ({ onLogin, language, showNotification }) => {
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
@@ -26,10 +27,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, language }) => {
     try {
       if (isSignUp) {
         await createUserWithEmailAndPassword(auth, email, password);
-        alert("Account created successfully! You are now logged in.");
+        showNotification("Account created successfully! You are now logged in.", "success");
         onLogin();
       } else {
         await signInWithEmailAndPassword(auth, email, password);
+        showNotification("Welcome back to AgriAgent!", "success");
         onLogin();
       }
     } catch (err: any) {

@@ -9,6 +9,7 @@ interface FinancePageProps {
   language: Language;
   user?: any;
   onNavigate: (page: Page) => void;
+  showNotification: (message: string, type?: 'success' | 'error' | 'info') => void;
 }
 
 const cashflowData = [
@@ -303,7 +304,7 @@ const FinancePage: React.FC<FinancePageProps> = ({ language, user, onNavigate })
               <button 
                 type="button"
                 onClick={() => {
-                  alert("Loan request submitted! Our partner bank will contact you within 24 hours.");
+                  showNotification("Loan request submitted! Our partner bank will contact you within 24 hours.", "success");
                   setShowLoanModal(false);
                 }}
                 className="w-full py-5 bg-emerald-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition-all"
@@ -368,7 +369,7 @@ const FinancePage: React.FC<FinancePageProps> = ({ language, user, onNavigate })
                       if (!user) {
                         onNavigate(Page.Login);
                       } else {
-                        alert(`Application for ${plan.name} initialized. Our insurance advisor will contact you.`);
+                        showNotification(`Application for ${plan.name} initialized. Our insurance advisor will contact you.`, "success");
                         setShowInsuranceModal(false);
                       }
                     }}

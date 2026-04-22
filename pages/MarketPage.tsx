@@ -22,7 +22,12 @@ const initialPrices: MarketPrice[] = [
   { crop: 'Soybeans', price: 4600, change: +45, trend: 'up' },
 ];
 
-const MarketPage: React.FC = () => {
+interface MarketPageProps {
+  language: Language;
+  showNotification: (message: string, type?: 'success' | 'error' | 'info') => void;
+}
+
+const MarketPage: React.FC<MarketPageProps> = ({ language, showNotification }) => {
   const [currentPrices, setCurrentPrices] = useState<MarketPrice[]>(initialPrices);
   const [alertActive, setAlertActive] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -49,7 +54,7 @@ const MarketPage: React.FC = () => {
     const user = auth.currentUser;
     
     if (!user) {
-      alert("Please login to set price alerts.");
+      showNotification("Please login to set price alerts.", "error");
       return;
     }
 
