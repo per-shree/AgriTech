@@ -43,7 +43,10 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate, user, language
             <div className="bg-emerald-600 p-1.5 rounded-lg mr-2">
               <Leaf className="h-6 w-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-emerald-900 tracking-tight">AgriAgent</span>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-emerald-900 tracking-tight leading-none">AgriAgent</span>
+              <span className="text-[8px] font-black text-emerald-600 uppercase tracking-widest mt-0.5">by Qwicit</span>
+            </div>
           </div>
 
           {/* Desktop Nav */}

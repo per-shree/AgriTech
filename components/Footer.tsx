@@ -59,8 +59,17 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
         </div>
         
-        <div className="border-t border-emerald-900 pt-8 text-center text-xs text-emerald-200/40">
-          <p>Design by <a href="https://qwicit.com/" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">Qwicit</a></p>
+        <div className="border-t border-emerald-900/50 pt-8 flex flex-col items-center gap-2">
+          <p className="text-[10px] text-emerald-200/30 uppercase tracking-[0.2em] font-bold">Designed & Developed by</p>
+          <a 
+            href="https://qwicit.com/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-emerald-400 font-black text-xl tracking-tighter hover:text-white transition-all hover:scale-105"
+          >
+            Qwicit
+          </a>
+          <p className="text-[10px] text-emerald-200/20 mt-4">© 2024 AgriAgent. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -1,6 +1,7 @@
 
 import React, { useState, useRef } from 'react';
-import { Camera, Upload, Loader2, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
+import { Camera, Upload, Loader2, CheckCircle2, AlertCircle, RefreshCw, Leaf } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { analyzeCropImage } from '../services/geminiService';
 import { DiagnosisResult } from '../types';
 import { Language, getTranslation } from '../translations';
@@ -167,33 +168,86 @@ const DiagnosePage: React.FC<DiagnosePageProps> = ({ language }) => {
             </div>
           </div>
         ) : (
-          <div className="relative">
+          <div className="relative overflow-hidden group">
             <img src={image} alt="Crop to diagnose" className="w-full aspect-video object-cover" />
+            
+            <AnimatePresence>
+              {loading && (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 bg-emerald-900/40 backdrop-blur-[2px] flex flex-col items-center justify-center z-10"
+                >
+                  <div className="relative">
+                    <motion.div
+                      animate={{ 
+                        scale: [1, 1.2, 1],
+                        rotate: [0, 180, 360]
+                      }}
+                      transition={{ 
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                      className="w-24 h-24 border-t-4 border-r-4 border-emerald-400 rounded-full"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Leaf className="h-10 w-10 text-emerald-400 animate-pulse" />
+                    </div>
+                  </div>
+                  
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    className="mt-8 text-center"
+                  >
+                    <p className="text-white font-bold text-xl mb-2 tracking-wide">
+                      AI Diagnostic Scan in Progress
+                    </p>
+                    <div className="flex gap-1 justify-center">
+                      {[0, 1, 2].map((i) => (
+                        <motion.div
+                          key={i}
+                          animate={{ opacity: [0.3, 1, 0.3] }}
+                          transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
+                          className="w-2 h-2 bg-emerald-400 rounded-full"
+                        />
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* Scanning Line Effect */}
+                  <motion.div 
+                    animate={{ top: ['0%', '100%', '0%'] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_15px_rgba(52,211,153,0.8)] z-20"
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <button 
               onClick={reset}
-              className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur rounded-full text-slate-600 hover:text-red-600 shadow-md transition-all"
+              className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur rounded-full text-slate-600 hover:text-red-600 shadow-md transition-all z-20"
             >
               <RefreshCw className="h-5 w-5" />
             </button>
-            {!result && (
+            {!result && !loading && (
               <div className="p-8 bg-white text-center">
                 <button 
                   onClick={processDiagnosis}
-                  disabled={loading}
-                  className="px-10 py-4 bg-emerald-600 text-white rounded-2xl font-bold text-lg hover:bg-emerald-700 disabled:opacity-50 transition-all flex items-center justify-center mx-auto"
+                  className="px-10 py-4 bg-emerald-600 text-white rounded-2xl font-bold text-lg hover:bg-emerald-700 transition-all flex items-center justify-center mx-auto group shadow-lg shadow-emerald-200"
                 >
-                  {loading ? (
-                    <><Loader2 className="animate-spin mr-2 h-5 w-5" /> {t.analyzing}</>
-                  ) : (
-                    t.runAi
-                  )}
+                  <Leaf className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                  {t.runAi}
                 </button>
               </div>
             )}
           </div>
         )}
 
-        {result && (
+        {result && !loading && (
           <div className="p-8 border-t border-slate-100 animate-in fade-in slide-in-from-top-4 duration-500">
             <div className="flex items-start gap-4 mb-6">
               <div className={`p-3 rounded-2xl ${
