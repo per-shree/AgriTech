@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
 import { Leaf, Mail, Lock, Loader2, ArrowRight, AlertCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { auth } from '../lib/firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { Language, getTranslation } from '../translations';
 
 interface LoginPageProps {
@@ -24,12 +25,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, language }) => {
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({ email, password });
-        if (error) throw error;
-        alert("Verification email sent! Please check your inbox.");
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert("Account created successfully! You are now logged in.");
+        onLogin();
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+        await signInWithEmailAndPassword(auth, email, password);
         onLogin();
       }
     } catch (err: any) {

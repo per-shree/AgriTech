@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { TrendingUp, TrendingDown, Minus, Info, MapPin, Bell, CheckCircle2, X } from 'lucide-react';
 import { MarketPrice } from '../types';
-import { supabase } from '../lib/supabase';
+import { db, auth } from '../lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const historicalData = [
   { name: 'Jan', corn: 1950, wheat: 2100, rice: 2000 },
@@ -45,9 +46,9 @@ const MarketPage: React.FC = () => {
   }, []);
 
   const handleSetAlert = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
+    const user = auth.currentUser;
     
-    if (!session?.user) {
+    if (!user) {
       alert("Please login to set price alerts.");
       return;
     }
@@ -56,14 +57,19 @@ const MarketPage: React.FC = () => {
     
     if (!alertActive) {
       // Save alert to database
-      await supabase.from('market_alerts').insert({
-        user_id: session.user.id,
-        crop: 'Maize (Corn)', // Example crop
-        alert_price: currentPrices[0].price
-      });
-      
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 4000);
+      try {
+        await addDoc(collection(db, 'market_alerts'), {
+          user_id: user.uid,
+          crop: 'Maize (Corn)', // Example crop
+          alert_price: currentPrices[0].price,
+          timestamp: serverTimestamp()
+        });
+        
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 4000);
+      } catch (err: any) {
+        console.error("Alert save failed:", err.message);
+      }
     }
   };
 

@@ -4,7 +4,8 @@ import { Camera, Upload, Loader2, CheckCircle2, AlertCircle, RefreshCw } from 'l
 import { analyzeCropImage } from '../services/geminiService';
 import { DiagnosisResult } from '../types';
 import { Language, getTranslation } from '../translations';
-import { supabase } from '../lib/supabase';
+import { db, auth } from '../lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 interface DiagnosePageProps {
   language: Language;
@@ -74,18 +75,22 @@ const DiagnosePage: React.FC<DiagnosePageProps> = ({ language }) => {
       const base64Data = image.split(',')[1];
       const analysisResult = await analyzeCropImage(base64Data);
       
-      // Save to Supabase if logged in
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        const { error: dbError } = await supabase.from('diagnoses').insert({
-          user_id: session.user.id,
-          disease: analysisResult.disease,
-          severity: analysisResult.severity,
-          description: analysisResult.description,
-          recommendations: analysisResult.recommendations,
-          confidence: analysisResult.confidence
-        });
-        if (dbError) console.error("Database save failed:", dbError.message);
+      // Save to Firestore if logged in
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          await addDoc(collection(db, 'diagnoses'), {
+            user_id: user.uid,
+            disease: analysisResult.disease,
+            severity: analysisResult.severity,
+            description: analysisResult.description,
+            recommendations: analysisResult.recommendations,
+            confidence: analysisResult.confidence,
+            timestamp: serverTimestamp()
+          });
+        } catch (dbError: any) {
+          console.error("Firestore save failed:", dbError.message);
+        }
       }
       
       setResult(analysisResult);

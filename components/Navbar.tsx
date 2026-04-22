@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { Page } from '../types';
 import { Leaf, Menu, X, User, Globe, LogOut, GraduationCap, Landmark, ShoppingBag } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { auth } from '../lib/firebase';
+import { signOut } from 'firebase/auth';
 import { Language, getTranslation } from '../translations';
 
 interface NavbarProps {
@@ -30,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate, user, language
   ];
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await signOut(auth);
     onNavigate(Page.Home);
   };
 
